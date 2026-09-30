@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vienna Pirates · Größen</title>
+<link rel="icon" type="image/png" href="vp-logo-icon.png">
+<style>
+  :root{
+    --red:#961b1b; --red-glow:rgba(150,27,27,.55);
+    --bg:#131313; --bg2:#1a1a1a; --card:#1f1f1f; --border:#333;
+    --text:#f2f2f2; --muted:#9a9a9a; --amber:#c9962c; --coach:#241f14;
+    --radius:8px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:'Inter','Segoe UI',sans-serif;}
+  h1,h2,.brand,button{font-family:'Montserrat','Segoe UI',sans-serif;}
+
+  .topbar{display:flex;align-items:center;gap:12px;padding:14px 22px;background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10;flex-wrap:wrap;}
+  .brand{font-weight:800;font-size:18px;letter-spacing:.3px;cursor:pointer;}
+  .brand span{color:var(--red);}
+  #status{font-size:12px;color:var(--muted);margin-right:auto;}
+
+  button{background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:var(--radius);padding:8px 14px;font-size:13px;cursor:pointer;transition:box-shadow .3s,border-color .3s;}
+  button:hover{border-color:var(--red);box-shadow:0 0 10px var(--red-glow);}
+  button.primary{background:var(--red);border-color:var(--red);}
+  button.danger{border-color:#7a2020;color:#e08585;padding:4px 9px;}
+  button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--red);outline-offset:1px;}
+
+  main{max-width:1600px;margin:0 auto;padding:24px 22px 60px;}
+  h2{margin:0 0 4px;font-size:22px;}
+  .sub{color:var(--muted);font-size:13px;margin-bottom:18px;}
+
+  .grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;}
+  .team-card{text-align:left;padding:18px;border-left:4px solid var(--red);display:flex;flex-direction:column;gap:6px;}
+  .team-card b{font-size:17px;}
+  .team-card small{color:var(--muted);font-size:12px;font-family:'Inter','Segoe UI',sans-serif;}
+
+  .head{display:flex;align-items:center;gap:14px;margin-bottom:16px;flex-wrap:wrap;}
+  .head{position:sticky;top:var(--topbar-h,62px);z-index:9;background:var(--bg);padding:8px 0;}
+  .head .actions{margin-left:auto;display:flex;gap:8px;}
+  .head .actions input{width:280px;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:var(--radius);padding:8px 10px;font:inherit;font-size:13px;}
+  @keyframes neu{from{background:var(--red-glow);}}
+  tr.neu td{animation:neu 2.5s;}
+  .table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius);}
+  table{border-collapse:collapse;width:100%;min-width:1100px;}
+  th{background:var(--bg2);color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.4px;text-align:left;padding:10px 6px;border-bottom:1px solid var(--border);white-space:nowrap;}
+  td{padding:4px 6px;border-bottom:1px solid #262626;}
+  tr:hover td{background:#1c1c1c;}
+  td input,td select{width:100%;background:transparent;color:var(--text);border:1px solid transparent;border-radius:6px;padding:6px 7px;font:inherit;font-size:13px;}
+  td input:hover,td select:hover{border-color:var(--border);}
+  td input:focus,td select:focus{border-color:var(--red);background:var(--card);}
+  td select{background:var(--bg);}
+  td select.sz{appearance:none;-webkit-appearance:none;background:transparent;cursor:pointer;}
+  td select.sz option{background:var(--card);}
+  .c-name{width:210px;} .c-name input{font-weight:600;}
+  .c-geb{width:110px;} .c-size{width:88px;} .c-div{width:170px;} .c-team{width:140px;} .c-del{width:44px;text-align:center;}
+  tr.sep td{background:var(--coach);color:var(--amber);font-family:'Montserrat','Segoe UI',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.5px;padding:10px 12px;border-top:2px solid var(--amber);}
+  tr.coach td{background:var(--coach);}
+  tr.coach td.c-name input{color:var(--amber);}
+  .empty{color:var(--muted);padding:18px;}
+  .hidden{display:none;}
+  dialog{background:var(--bg2);color:var(--text);border:1px solid var(--border);border-radius:var(--radius);padding:22px;width:min(420px,92vw);}
+  dialog::backdrop{background:rgba(0,0,0,.6);}
+  dialog label{display:block;font-size:13px;color:var(--muted);margin-top:12px;}
+  dialog input{display:block;width:100%;margin-top:4px;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:8px;font:inherit;}
+  .dlg-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px;}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand" id="home" tabindex="0">Vienna <span>Pirates</span> · Größen</div>
+  <div id="status"></div>
+  <button id="btnOrdner" title="Sicherung automatisch in einen Ordner schreiben (Chrome/Edge)">Ordner verbinden</button>
+  <button id="btnExport">Sicherung speichern</button>
+  <button id="btnImport">Sicherung laden</button>
+  <input type="file" id="fileImport" accept=".json,application/json" class="hidden">
+  <button id="btnHandy">Handy-Datei erzeugen</button>
+</header>
+<main id="app"></main>
+
+<dialog id="dlgHandy">
+  <form method="dialog">
+    <h2>Handy-Datei erzeugen</h2>
+    <p class="sub">Enthält nur Vorname, abgekürzten Nachnamen, Team und Größen – verschlüsselt mit diesem Passwort. Immer dasselbe Passwort verwenden.</p>
+    <label>Passwort<input type="password" id="pw1" required minlength="6" autocomplete="new-password"></label>
+    <label>Passwort wiederholen<input type="password" id="pw2" required minlength="6" autocomplete="new-password"></label>
+    <div id="pwMsg" class="sub" role="alert"></div>
+    <div class="dlg-actions"><button value="cancel" formnovalidate>Abbrechen</button><button class="primary" value="ok">Erzeugen</button></div>
+  </form>
+</dialog>
+
+<template id="handyTpl">
+<style>
+  :root{--red:#c42a2a;--bg:#111;--bg2:#181818;--line:#2a2a2a;--text:#f2f2f2;--muted:#8d8d8d;--amber:#d4a23a;}
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;-webkit-text-size-adjust:100%;}
+  header{position:sticky;top:0;z-index:1;background:var(--bg);padding:14px 16px 12px;border-bottom:1px solid var(--line);}
+  .top{display:flex;align-items:baseline;gap:8px;margin-bottom:12px;}
+  .brand{font-weight:800;font-size:18px;letter-spacing:-.2px;} .brand span{color:var(--red);}
+  .stand{font-size:12px;color:var(--muted);}
+  .logout{margin-left:auto;background:none;border:none;color:var(--muted);font:inherit;font-size:13px;padding:6px 0;cursor:pointer;}
+  input{font:inherit;font-size:16px;color:var(--text);background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:11px 12px;width:100%;}
+  :focus-visible{outline:2px solid var(--red);outline-offset:2px;}
+  main{max-width:640px;margin:0 auto;padding-bottom:40px;}
+  .login{max-width:340px;margin:20vh auto 0;display:flex;flex-direction:column;gap:12px;padding:0 16px;}
+  .login button{font:inherit;font-size:16px;font-weight:600;color:#fff;background:var(--red);border:none;border-radius:10px;padding:12px;cursor:pointer;}
+  .err{color:#e58a8a;font-size:14px;min-height:1.2em;}
+  details{border-bottom:1px solid var(--line);scroll-margin-top:120px;}
+  summary{list-style:none;display:flex;align-items:center;gap:10px;padding:16px;cursor:pointer;font-weight:700;font-size:17px;}
+  summary::-webkit-details-marker{display:none;}
+  summary small{color:var(--muted);font-weight:400;font-size:14px;margin-left:auto;}
+  summary::after{content:'';width:8px;height:8px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);margin:-4px 2px 0 0;transition:transform .2s;}
+  details[open] summary::after{transform:rotate(-135deg);margin-top:4px;}
+  details[open] summary{color:var(--red);}
+  .p{padding:12px 16px;border-top:1px solid var(--line);}
+  .p b{display:block;font-size:16px;margin-bottom:6px;}
+  .p b small{color:var(--muted);font-weight:400;font-size:13px;margin-left:6px;}
+  .coach b{color:var(--amber);}
+  dl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px 12px;margin:0;}
+  dt{font-size:11px;color:var(--muted);} dd{margin:0;font-weight:600;font-size:15px;}
+  h3{margin:0;padding:14px 16px 6px;font-size:12px;font-weight:600;color:var(--amber);text-transform:uppercase;letter-spacing:.6px;border-top:1px solid var(--line);}
+  .none{color:var(--muted);padding:16px;}
+</style>
+<main id="app"></main>
+<script>
+(async function(){
+const ENC="__DATA__",STAND="__STAND__",PWKEY="vpHandyPw";
+const app=document.getElementById('app');
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+async function decrypt(pw){
+  const b=Uint8Array.from(atob(ENC),c=>c.charCodeAt(0));
+  const base=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveKey']);
+  const key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:b.slice(0,16),iterations:250000,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['decrypt']);
+  return JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:b.slice(16,28)},key,b.slice(28))));
+}
+function login(msg){
+  app.innerHTML=`<form class="login"><div class="brand">Vienna <span>Pirates</span> · Größen</div>
+    <label for="pw">Passwort</label><input type="password" id="pw" autocomplete="current-password" required>
+    <div class="err" role="alert">${esc(msg||'')}</div><button>Öffnen</button></form>`;
+  app.querySelector('form').onsubmit=async e=>{
+    e.preventDefault();const pw=app.querySelector('#pw').value;
+    try{show(await decrypt(pw));try{localStorage.setItem(PWKEY,pw);}catch(_){}}
+    catch(_){login('Passwort falsch.');}
+  };
+  app.querySelector('#pw').focus();
+}
+function show(d){
+  document.body.insertAdjacentHTML('afterbegin',`<header><div class="top"><div class="brand">Vienna <span>Pirates</span></div><span class="stand">Stand ${esc(STAND)}</span><button class="logout" id="out">Abmelden</button></div>
+    <input type="search" id="q" placeholder="Name suchen…" aria-label="Name suchen"></header>`);
+  const q=document.getElementById('q');
+  const card=(p,team)=>`<div class="p${p.c?' coach':''}"><b>${esc(p.n)}${team?`<small>${esc(team)}</small>`:''}</b>${p.s.length?`<dl>${p.s.map(([l,v])=>`<div><dt>${esc(l)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>`:'<span class="stand">keine Größen</span>'}</div>`;
+  const list=ps=>{const a=ps.filter(p=>!p.c),c=ps.filter(p=>p.c);return a.map(p=>card(p)).join('')+(c.length?`<h3>Coaches &amp; Betreuer</h3>${c.map(p=>card(p)).join('')}`:'');};
+  const teams=d.teams.map(t=>`<details name="team"><summary>${esc(t.name)}<small>${t.p.filter(p=>!p.c).length}</small></summary>${list(t.p)}</details>`).join('');
+  function render(){
+    const term=q.value.trim().toLowerCase();
+    if(!term){app.innerHTML=teams;return;}
+    const hits=d.teams.flatMap(t=>t.p.filter(p=>p.n.toLowerCase().includes(term)).map(p=>card(p,t.name)));
+    app.innerHTML=hits.join('')||'<div class="none">Niemand gefunden.</div>';
+  }
+  app.addEventListener('toggle',e=>{if(e.target.open)e.target.scrollIntoView({block:'start'});},true);
+  q.oninput=render;
+  document.getElementById('out').onclick=()=>{try{localStorage.removeItem(PWKEY);}catch(_){}location.reload();};
+  render();
+}
+let saved=null;try{saved=localStorage.getItem(PWKEY);}catch(_){}
+if(saved){try{show(await decrypt(saved));return;}catch(_){}}
+login();
+})();
+</script>
+</template>
+
+<script>
+(function(){
+const KEY='vpGroessen';
+const DEFAULT={"teams":[{"id":"t1","name":"Pocket"},{"id":"t2","name":"Tiny"},{"id":"t3","name":"Red Rubies"},{"id":"t4","name":"Zodiac"},{"id":"t5","name":"Treasure"},{"id":"t6","name":"Guardians"},{"id":"t7","name":"Triple X"},{"id":"t8","name":"Thunder"},{"id":"t9","name":"Lady 4"},{"id":"t10","name":"Revolution"}],"people":[]};
+const FIELDS=[['tshirt','T-Shirt'],['dressOben','Dress oben'],['dressUnten','Dress unten'],['bh','Sport BH'],['schuhe','Schuhe'],['shorts','Shorts']];
+const SIZES=['Y2XS','YXS','YS','YM','YL','YXL','2XS','XS','S','M','L','XL','XXL','L/XL','70','90','104','110','116','122','128','130','134','136','140','146','150','152','156','158','160','164','176','/'];
+const SHOES=['5','5,5','6','6,5','7','7,5','8','8,5','9','9,5','10','10,5','11','11,5','12','/'];
+const app=document.getElementById('app');
+const statusEl=document.getElementById('status');
+let state=load();
+
+function load(){
+  try{
+    const s=JSON.parse(localStorage.getItem(KEY));
+    if(s&&Array.isArray(s.teams)&&Array.isArray(s.people)&&s.people.length) return s;
+  }catch(e){}
+  return structuredClone(DEFAULT);
+}
+function save(){
+  try{
+    localStorage.setItem(KEY,JSON.stringify(state));
+    statusEl.textContent='Gespeichert '+new Date().toLocaleTimeString('de-AT',{hour:'2-digit',minute:'2-digit'});
+  }catch(e){
+    statusEl.textContent='⚠ Speichern fehlgeschlagen – bitte „Sicherung speichern“';
+  }
+  sichern();
+}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+const nachname=n=>n.trim().split(/\s+/).pop()||'\uffff';
+const members=tid=>state.people.filter(p=>p.teamId===tid).sort((a,b)=>(!!a.coach-!!b.coach)||nachname(a.name).localeCompare(nachname(b.name),'de')||a.name.localeCompare(b.name,'de'));
+
+function render(){
+  const tid=location.hash.slice(1);
+  const team=state.teams.find(t=>t.id===tid);
+  team?renderTeam(team):renderOverview();
+}
+
+function renderOverview(){
+  app.innerHTML=`<h2>Teams</h2><div class="sub">${state.people.filter(p=>!p.coach).length} Athlet:innen in ${state.teams.length} Teams${state.people.length?'':' · Noch keine Daten: „Ordner verbinden“ (vorhandene Sicherung wird geladen) oder „Sicherung laden“.'}</div>
+  <div class="grid">${state.teams.map(t=>{
+    const m=members(t.id),c=m.filter(p=>p.coach).length;
+    return `<button class="team-card" data-team="${esc(t.id)}"><b>${esc(t.name)}</b><small>${m.length-c} Athlet:innen${c?` · ${c} Coaches/Betreuer`:''}</small></button>`;
+  }).join('')}</div>`;
+}
+
+function sizeSelect(k,l,v){
+  const opts=['',...(k==='schuhe'?SHOES:SIZES)];
+  if(v&&!opts.includes(v)) opts.push(v);
+  return `<select class="sz" data-f="${k}" aria-label="${l}">${opts.map(o=>`<option value="${esc(o)}"${o===v?' selected':''}>${o?esc(o):'–'}</option>`).join('')}<option value="__andere">Andere…</option></select>`;
+}
+
+function row(p){
+  const cells=FIELDS.map(([k,l])=>`<td class="c-size">${sizeSelect(k,l,p[k])}</td>`).join('');
+  const opts=state.teams.map(t=>`<option value="${esc(t.id)}"${t.id===p.teamId?' selected':''}>${esc(t.name)}</option>`).join('');
+  return `<tr data-id="${esc(p.id)}"${p.coach?' class="coach"':''}>
+    <td class="c-name"><input data-f="name" value="${esc(p.name)}" aria-label="Name"></td>
+    <td class="c-geb"><input data-f="geb" value="${esc(p.geb)}" aria-label="Geburtsdatum"></td>
+    ${cells}
+    <td class="c-div"><input data-f="div" value="${esc(p.div)}" aria-label="Diverses"></td>
+    <td class="c-team"><select data-f="teamId" aria-label="Team">${opts}</select></td>
+    <td class="c-del"><button class="danger" data-del title="Löschen" aria-label="${esc(p.name)} löschen">✕</button></td>
+  </tr>`;
+}
+
+function renderTeam(team){
+  const m=members(team.id),ath=m.filter(p=>!p.coach),co=m.filter(p=>p.coach);
+  app.innerHTML=`<div class="head">
+      <button data-back>← Alle Teams</button>
+      <div><h2>${esc(team.name)}</h2><div class="sub" style="margin:0">${ath.length} Athlet:innen${co.length?` · ${co.length} Coaches/Betreuer`:''}</div></div>
+      <div class="actions"><input id="addName" placeholder="Name eintragen (Vorname Nachname) …" aria-label="Neuer Name" autocomplete="off"><button class="primary" data-add="0">+ Athlet:in</button><button data-add="1">+ Coach/Betreuer</button></div>
+    </div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Name</th><th>Geb.Datum</th>${FIELDS.map(f=>`<th>${f[1]}</th>`).join('')}<th>Diverses</th><th>Team</th><th></th></tr></thead>
+      <tbody>${ath.map(row).join('')||'<tr><td colspan="12" class="empty">Noch niemand im Team.</td></tr>'}
+      ${co.length?`<tr class="sep"><td colspan="12">Coaches &amp; Betreuer</td></tr>${co.map(row).join('')}`:''}</tbody>
+    </table></div>`;
+}
+
+function addPerson(coach){
+  const name=document.getElementById('addName').value.trim();
+  if(!name){document.getElementById('addName').focus();return;}
+  const p={id:'p'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),teamId:location.hash.slice(1),name,coach,geb:'',div:''};
+  FIELDS.forEach(([k])=>p[k]='');
+  state.people.push(p);save();render();
+  app.querySelector(`tr[data-id="${p.id}"]`).classList.add('neu');
+  document.getElementById('addName').focus({preventScroll:true});
+  statusEl.textContent=`${name} eingetragen`;
+}
+app.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='addName')addPerson(false);});
+
+app.addEventListener('click',e=>{
+  const card=e.target.closest('[data-team]');
+  if(card){location.hash=card.dataset.team;return;}
+  if(e.target.closest('[data-back]')){location.hash='';return;}
+  const add=e.target.closest('[data-add]');
+  if(add){addPerson(add.dataset.add==='1');return;}
+  if(e.target.closest('[data-del]')){
+    const p=state.people.find(x=>x.id===e.target.closest('tr').dataset.id);
+    if(confirm(`„${p.name||'Ohne Namen'}“ wirklich löschen?`)){state.people=state.people.filter(x=>x!==p);save();render();}
+  }
+});
+
+app.addEventListener('change',e=>{
+  const f=e.target.dataset.f;if(!f)return;
+  const p=state.people.find(x=>x.id===e.target.closest('tr').dataset.id);
+  if(e.target.value==='__andere'){
+    const inp=document.createElement('input');
+    inp.dataset.f=f;inp.value=p[f];inp.setAttribute('aria-label',e.target.getAttribute('aria-label'));
+    e.target.replaceWith(inp);inp.focus();inp.select();
+    return;
+  }
+  p[f]=e.target.value.trim();
+  save();
+  if(f==='name'&&members(p.teamId).map(x=>x.id).join()!==[...app.querySelectorAll('tr[data-id]')].map(r=>r.dataset.id).join()) render();
+  if(e.target.tagName==='INPUT'&&FIELDS.some(([k])=>k===f)) render();
+  if(f==='teamId'){
+    const t=state.teams.find(x=>x.id===p.teamId);
+    statusEl.textContent=`${p.name} → ${t.name} verschoben`;
+    render();
+  }
+});
+
+document.getElementById('home').addEventListener('click',()=>location.hash='');
+window.addEventListener('hashchange',render);
+const topbar=document.querySelector('.topbar');
+new ResizeObserver(()=>document.documentElement.style.setProperty('--topbar-h',topbar.offsetHeight+'px')).observe(topbar);
+
+document.getElementById('btnExport').addEventListener('click',()=>{
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([JSON.stringify(state,null,1)],{type:'application/json'}));
+  const d=new Date();
+  a.download=`pirates-groessen-${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}.json`;
+  a.click();URL.revokeObjectURL(a.href);
+});
+const fileIn=document.getElementById('fileImport');
+document.getElementById('btnImport').addEventListener('click',()=>fileIn.click());
+fileIn.addEventListener('change',async()=>{
+  const f=fileIn.files[0];fileIn.value='';if(!f)return;
+  try{
+    const s=JSON.parse(await f.text());
+    if(!Array.isArray(s.teams)||!Array.isArray(s.people)||!s.people.length) throw 0;
+    if(!confirm(`Sicherung mit ${s.people.length} Personen laden? Der aktuelle Stand wird ersetzt.`))return;
+    state=s;save();location.hash='';render();
+  }catch(e){alert('Diese Datei ist keine gültige Größen-Sicherung.');}
+});
+
+const kurzName=n=>{const [v,...r]=String(n).trim().split(/\s+/);return [v,...r.map(w=>w[0].toUpperCase()+'.')].join(' ');};
+async function encrypt(obj,pw){
+  const salt=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12));
+  const base=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveKey']);
+  const key=await crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:250000,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['encrypt']);
+  const ct=new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv},key,new TextEncoder().encode(JSON.stringify(obj))));
+  const all=new Uint8Array([...salt,...iv,...ct]);
+  let bin='';for(const b of all)bin+=String.fromCharCode(b);
+  return btoa(bin);
+}
+const dlg=document.getElementById('dlgHandy'),pw1=document.getElementById('pw1'),pw2=document.getElementById('pw2'),pwMsg=document.getElementById('pwMsg');
+document.getElementById('btnHandy').addEventListener('click',()=>{pw1.value=pw2.value=pwMsg.textContent='';dlg.showModal();});
+dlg.querySelector('form').addEventListener('submit',async e=>{
+  if(e.submitter?.value!=='ok')return;
+  if(pw1.value!==pw2.value){e.preventDefault();pwMsg.textContent='Die Passwörter stimmen nicht überein.';return;}
+  const data={teams:state.teams.map(t=>({name:t.name,p:members(t.id).filter(p=>p.name.trim()).map(p=>({
+    n:kurzName(p.name),c:p.coach,s:FIELDS.filter(([k])=>p[k]).map(([k,l])=>[l,p[k]])
+  }))}))};
+  const stand=new Date().toLocaleDateString('de-AT',{day:'2-digit',month:'2-digit',year:'numeric'});
+  const tpl=document.getElementById('handyTpl').innerHTML.replace('__DATA__',await encrypt(data,pw1.value)).replace('__STAND__',stand);
+  const html=`<!DOCTYPE html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>Vienna Pirates · Größen</title><link rel="icon" type="image/png" href="vp-logo-icon.png"><link rel="apple-touch-icon" href="vp-logo-icon.png"></head><body>${tpl}</body></html>`;
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([html],{type:'text/html'}));
+  a.download='handy.html';a.click();URL.revokeObjectURL(a.href);
+  statusEl.textContent='Handy-Datei erzeugt – jetzt auf Netlify hochladen';
+});
+
+const btnOrdner=document.getElementById('btnOrdner');
+const DATEI='pirates-groessen.json',OSTAND='vpGroessenOrdnerStand';
+const tag=()=>new Date().toLocaleDateString('sv-SE');
+const idb=(mode,fn)=>new Promise((ok,err)=>{const o=indexedDB.open('vpGroessenOrdner',1);o.onupgradeneeded=()=>o.result.createObjectStore('h');o.onerror=()=>err(o.error);o.onsuccess=()=>{const t=o.result.transaction('h',mode),r=fn(t.objectStore('h'));t.oncomplete=()=>ok(r.result);t.onerror=()=>err(t.error);};});
+let dir=null,gemerkt=null,bereit=false,timer=0;
+const ordnerText=(t,titel='')=>{btnOrdner.textContent=t;btnOrdner.title=titel;};
+const merkeStand=()=>{try{localStorage.setItem(OSTAND,JSON.stringify(state));}catch(e){}};
+async function lese(){
+  try{
+    const s=JSON.parse(await(await(await dir.getFileHandle(DATEI)).getFile()).text());
+    return Array.isArray(s.teams)&&Array.isArray(s.people)?s:'defekt';
+  }catch(e){return e.name==='NotFoundError'?null:'defekt';}
+}
+async function kopie(name,immer){
+  if(!immer){try{await dir.getFileHandle(name);return;}catch(e){}}
+  const w=await(await dir.getFileHandle(name,{create:true})).createWritable();
+  await w.write(await(await(await dir.getFileHandle(DATEI)).getFile()).text());await w.close();
+  const alt=[];for await(const n of dir.keys())if(/^sicherung-\d{4}-\d\d-\d\d\.json$/.test(n))alt.push(n);
+  for(const n of alt.sort().slice(0,-14))await dir.removeEntry(n);
+}
+async function abgleich(){
+  bereit=false;
+  const s=await lese();
+  if(s==='defekt'){ordnerText('⚠ Ordner unlesbar','Die Sicherung im Ordner ist nicht lesbar – es wird nichts überschrieben.');return;}
+  if(s&&s.people.length&&JSON.stringify(s)!==JSON.stringify(state)&&JSON.stringify(s)!==localStorage.getItem(OSTAND)){
+    if(!state.people.length||confirm(`Im Ordner liegt eine Sicherung mit ${s.people.length} Personen. Diese laden und den aktuellen Stand (${state.people.length} Personen) ersetzen?\n\nAbbrechen = aktueller Stand bleibt, die Sicherung im Ordner wird als Kopie aufgehoben.`)){
+      state=s;save();render();
+    }else await kopie(`sicherung-${tag()}-vor-abgleich.json`,true);
+  }
+  bereit=true;
+  if(state.people.length)await schreibe();else ordnerText('💾 '+dir.name+' ✓');
+}
+async function schreibe(){
+  if(!dir||!bereit||!state.people.length)return;
+  try{
+    const alt=await lese();
+    if(alt==='defekt')throw new Error('Datei im Ordner nicht lesbar – nichts überschrieben');
+    if(!alt||JSON.stringify(alt)!==JSON.stringify(state)){
+      if(alt)await kopie(`sicherung-${tag()}.json`);
+      const w=await(await dir.getFileHandle(DATEI,{create:true})).createWritable();
+      await w.write(JSON.stringify(state,null,1));await w.close();
+      const neu=await lese();
+      if(!neu||neu==='defekt'||neu.people.length!==state.people.length)throw new Error('Rücklesen stimmt nicht');
+    }
+    merkeStand();
+    ordnerText('💾 '+dir.name+' · '+new Date().toLocaleTimeString('de-AT',{hour:'2-digit',minute:'2-digit'}));
+  }catch(e){ordnerText('⚠ Ordner-Sicherung fehlgeschlagen',e.message);}
+}
+function sichern(){clearTimeout(timer);timer=setTimeout(schreibe,600);}
+btnOrdner.addEventListener('click',async()=>{
+  try{
+    if(gemerkt&&!dir){if(await gemerkt.requestPermission({mode:'readwrite'})!=='granted')return;dir=gemerkt;}
+    else{dir=await showDirectoryPicker({mode:'readwrite'});await idb('readwrite',s=>s.put(dir,'dir'));}
+    await abgleich();
+  }catch(e){if(e.name!=='AbortError')ordnerText('⚠ Ordner-Fehler',e.message);}
+});
+if(!window.showDirectoryPicker)btnOrdner.classList.add('hidden');
+else idb('readonly',s=>s.get('dir')).then(async h=>{
+  if(!h)return;
+  gemerkt=h;
+  if(await h.queryPermission({mode:'readwrite'})==='granted'){dir=h;await abgleich();}
+  else ordnerText('Zugriff bestätigen','Ordner ist gemerkt – einmal klicken, dann läuft die Sicherung weiter.');
+}).catch(()=>{});
+
+render();
+})();
+</script>
+</body>
+</html>
