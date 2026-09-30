@@ -297,12 +297,24 @@ window.addEventListener('hashchange',render);
 const topbar=document.querySelector('.topbar');
 new ResizeObserver(()=>document.documentElement.style.setProperty('--topbar-h',topbar.offsetHeight+'px')).observe(topbar);
 
-document.getElementById('btnExport').addEventListener('click',()=>{
+function herunterladen(name){
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([JSON.stringify(state,null,1)],{type:'application/json'}));
-  const d=new Date();
-  a.download=`pirates-groessen-${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}.json`;
-  a.click();URL.revokeObjectURL(a.href);
+  a.download=name;a.click();URL.revokeObjectURL(a.href);
+}
+document.getElementById('btnExport').addEventListener('click',async()=>{
+  const name=`pirates-groessen-${tag()}-${new Date().toLocaleTimeString('de-AT',{hour:'2-digit',minute:'2-digit'}).replace(':','')}.json`;
+  try{
+    if(gemerkt&&!dir&&await gemerkt.requestPermission({mode:'readwrite'})==='granted'){dir=gemerkt;await abgleich();}
+    if(dir&&bereit&&state.people.length){
+      const txt=JSON.stringify(state,null,1);
+      const w=await(await dir.getFileHandle(name,{create:true})).createWritable();await w.write(txt);await w.close();
+      if(await(await(await dir.getFileHandle(name)).getFile()).text()!==txt)throw new Error('Rücklesen stimmt nicht');
+      statusEl.textContent='Sicherung im Ordner: '+name;return;
+    }
+    statusEl.textContent='Kein Ordner verfügbar – Datei wird heruntergeladen';
+  }catch(e){statusEl.textContent='⚠ Ordner-Sicherung nicht möglich ('+e.message+') – Datei wird heruntergeladen';}
+  herunterladen(name);
 });
 const fileIn=document.getElementById('fileImport');
 document.getElementById('btnImport').addEventListener('click',()=>fileIn.click());
