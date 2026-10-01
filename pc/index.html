@@ -32,6 +32,15 @@
   .sub{color:var(--muted);font-size:13px;margin-bottom:18px;}
 
   .grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;}
+  body.start::before{content:'';position:fixed;inset:0;z-index:-1;background:url(vp-hintergrund.jpg) 68% 25%/cover;opacity:.12;-webkit-mask-image:linear-gradient(#000 45%,transparent);mask-image:linear-gradient(#000 45%,transparent);}
+  body.start::after{content:'';position:fixed;inset:0;z-index:-1;background:radial-gradient(ellipse 70% 45% at 50% 0,var(--red-glow),transparent 70%);opacity:.5;}
+  body.start .team-card{background:rgba(31,31,31,.72);}
+  body.start .team-card:hover{background:rgba(48,24,24,.8);}
+  .stats{display:flex;gap:44px;margin:26px 0 30px;flex-wrap:wrap;}
+  .stats div{display:flex;flex-direction:column;}
+  .stats b{font-family:'Montserrat','Segoe UI',sans-serif;font-size:52px;font-weight:800;line-height:1;}
+  .stats span{color:var(--muted);font-size:13px;text-transform:uppercase;letter-spacing:.6px;margin-top:6px;}
+  .stats .rot b{color:var(--red);}
   .team-card{text-align:left;padding:18px;border-left:4px solid var(--red);display:flex;flex-direction:column;gap:6px;}
   .team-card b{font-size:17px;}
   .team-card small{color:var(--muted);font-size:12px;font-family:'Inter','Segoe UI',sans-serif;}
@@ -205,11 +214,13 @@ const members=tid=>state.people.filter(p=>p.teamId===tid).sort((a,b)=>(!!a.coach
 function render(){
   const tid=location.hash.slice(1);
   const team=state.teams.find(t=>t.id===tid);
+  document.body.classList.toggle('start',!team);
   team?renderTeam(team):renderOverview();
 }
 
 function renderOverview(){
-  app.innerHTML=`<h2>Teams</h2><div class="sub">${state.people.filter(p=>!p.coach).length} Athlet:innen in ${state.teams.length} Teams${state.people.length?'':' · Noch keine Daten: „Ordner verbinden“ (vorhandene Sicherung wird geladen) oder „Sicherung laden“.'}</div>
+  const ath=state.people.filter(p=>!p.coach).length;
+  app.innerHTML=`<div class="stats"><div class="rot"><b>${ath}</b><span>Athlet:innen</span></div><div><b>${state.people.length-ath}</b><span>Coaches &amp; Betreuer</span></div><div><b>${state.teams.length}</b><span>Teams</span></div></div>${state.people.length?'':'<div class="sub">Noch keine Daten: „Ordner verbinden“ (vorhandene Sicherung wird geladen) oder „Sicherung laden“.</div>'}
   <div class="grid">${state.teams.map(t=>{
     const m=members(t.id),c=m.filter(p=>p.coach).length;
     return `<button class="team-card" data-team="${esc(t.id)}"><b>${esc(t.name)}</b><small>${m.length-c} Athlet:innen${c?` · ${c} Coaches/Betreuer`:''}</small></button>`;
