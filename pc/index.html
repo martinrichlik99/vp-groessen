@@ -53,7 +53,7 @@
   td select{background:var(--bg);}
   td select.sz{appearance:none;-webkit-appearance:none;background:transparent;cursor:pointer;}
   td select.sz option{background:var(--card);}
-  .c-name{width:210px;} .c-name input{font-weight:600;}
+  .c-name{width:150px;} .c-name input{font-weight:600;}
   .c-geb{width:110px;} .c-size{width:88px;} .c-div{width:170px;} .c-team{width:140px;} .c-del{width:44px;text-align:center;}
   tr.sep td{background:var(--coach);color:var(--amber);font-family:'Montserrat','Segoe UI',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.5px;padding:10px 12px;border-top:2px solid var(--amber);}
   tr.coach td{background:var(--coach);}
@@ -199,6 +199,7 @@ function save(){
 }
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 const nachname=n=>n.trim().split(/\s+/).pop()||'\uffff';
+const teile=n=>{const w=n.trim().split(/\s+/).filter(Boolean);return w.length<2?{nach:'',vor:w.join(' ')}:{nach:w.pop(),vor:w.join(' ')};};
 const members=tid=>state.people.filter(p=>p.teamId===tid).sort((a,b)=>(!!a.coach-!!b.coach)||nachname(a.name).localeCompare(nachname(b.name),'de')||a.name.localeCompare(b.name,'de'));
 
 function render(){
@@ -225,7 +226,8 @@ function row(p){
   const cells=FIELDS.map(([k,l])=>`<td class="c-size">${sizeSelect(k,l,p[k])}</td>`).join('');
   const opts=state.teams.map(t=>`<option value="${esc(t.id)}"${t.id===p.teamId?' selected':''}>${esc(t.name)}</option>`).join('');
   return `<tr data-id="${esc(p.id)}"${p.coach?' class="coach"':''}>
-    <td class="c-name"><input data-f="name" value="${esc(p.name)}" aria-label="Name"></td>
+    <td class="c-name"><input data-f="nach" value="${esc(teile(p.name).nach)}" aria-label="Nachname"></td>
+    <td class="c-name"><input data-f="vor" value="${esc(teile(p.name).vor)}" aria-label="Vorname"></td>
     <td class="c-geb"><input data-f="geb" value="${esc(p.geb)}" aria-label="Geburtsdatum"></td>
     ${cells}
     <td class="c-div"><input data-f="div" value="${esc(p.div)}" aria-label="Diverses"></td>
@@ -242,9 +244,9 @@ function renderTeam(team){
       <div class="actions"><input id="addName" placeholder="Name eintragen (Vorname Nachname) …" aria-label="Neuer Name" autocomplete="off"><button class="primary" data-add="0">+ Athlet:in</button><button data-add="1">+ Coach/Betreuer</button></div>
     </div>
     <div class="table-wrap"><table>
-      <thead><tr><th>Name</th><th>Geb.Datum</th>${FIELDS.map(f=>`<th>${f[1]}</th>`).join('')}<th>Diverses</th><th>Team</th><th></th></tr></thead>
-      <tbody>${ath.map(row).join('')||'<tr><td colspan="12" class="empty">Noch niemand im Team.</td></tr>'}
-      ${co.length?`<tr class="sep"><td colspan="12">Coaches &amp; Betreuer</td></tr>${co.map(row).join('')}`:''}</tbody>
+      <thead><tr><th>Nachname</th><th>Vorname</th><th>Geb.Datum</th>${FIELDS.map(f=>`<th>${f[1]}</th>`).join('')}<th>Diverses</th><th>Team</th><th></th></tr></thead>
+      <tbody>${ath.map(row).join('')||'<tr><td colspan="13" class="empty">Noch niemand im Team.</td></tr>'}
+      ${co.length?`<tr class="sep"><td colspan="13">Coaches &amp; Betreuer</td></tr>${co.map(row).join('')}`:''}</tbody>
     </table></div>`;
 }
 
@@ -281,9 +283,12 @@ app.addEventListener('change',e=>{
     e.target.replaceWith(inp);inp.focus();inp.select();
     return;
   }
-  p[f]=e.target.value.trim();
+  if(f==='nach'||f==='vor'){
+    const tr=e.target.closest('tr'),g=k=>tr.querySelector(`[data-f="${k}"]`).value.trim();
+    p.name=`${g('vor')} ${g('nach')}`.trim();
+  }else p[f]=e.target.value.trim();
   save();
-  if(f==='name'&&members(p.teamId).map(x=>x.id).join()!==[...app.querySelectorAll('tr[data-id]')].map(r=>r.dataset.id).join()) render();
+  if((f==='nach'||f==='vor')&&members(p.teamId).map(x=>x.id).join()!==[...app.querySelectorAll('tr[data-id]')].map(r=>r.dataset.id).join()) render();
   if(e.target.tagName==='INPUT'&&FIELDS.some(([k])=>k===f)) render();
   if(f==='teamId'){
     const t=state.teams.find(x=>x.id===p.teamId);
