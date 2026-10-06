@@ -103,7 +103,7 @@
   @media print{
     body>:not(#druck){display:none!important;}
     body{background:#fff;} body.start::before{display:none;}
-    @page{size:A4;margin:16mm 16mm 20mm;}
+    @page{size:A4;margin:16mm 16mm 20mm;@top-left{content:""}@top-center{content:""}@top-right{content:""}@bottom-left{content:""}@bottom-center{content:""}@bottom-right{content:""}}
     #druck{display:block;color:#111;font:13px 'Inter','Segoe UI',sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
     #druck .dk{display:flex;align-items:center;gap:16px;padding-bottom:12px;border-bottom:3px solid var(--red);}
     #druck .dk img{width:64px;height:64px;}
