@@ -73,6 +73,87 @@
   dialog label{display:block;font-size:13px;color:var(--muted);margin-top:12px;}
   dialog input{display:block;width:100%;margin-top:4px;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:8px;font:inherit;}
   .dlg-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px;}
+
+  .best-card{border-left-color:var(--amber);}
+  .bereich{margin-top:44px;padding-top:22px;border-top:1px solid var(--border);}
+  .bereich h3{margin:0 0 14px;font:700 12px 'Montserrat','Segoe UI',sans-serif;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);}
+  .head .actions select{background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:var(--radius);padding:8px 10px;font:inherit;font-size:13px;}
+  .oname{background:transparent;color:var(--text);border:1px solid transparent;border-radius:6px;padding:2px 6px;margin-left:-7px;font:800 22px 'Montserrat','Segoe UI',sans-serif;width:min(420px,60vw);}
+  .oname:hover{border-color:var(--border);} .oname:focus{border-color:var(--red);background:var(--card);}
+  .badge{font-size:11px;padding:2px 9px;border-radius:99px;border:1px solid var(--border);color:var(--muted);text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;}
+  .badge.bestellt{color:var(--amber);border-color:var(--amber);} .badge.geliefert{color:#86c986;border-color:#3d6b3d;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px;}
+  .chip[aria-pressed="true"]{background:var(--red);border-color:var(--red);}
+  .summe{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 18px;font-size:13px;}
+  .summe span{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:6px 10px;}
+  .summe .ges{background:var(--red);border-color:var(--red);font-weight:700;}
+  .warn{color:#e08585;}
+  .table-wrap.o{max-width:980px;} table.otab{min-width:0;}
+  tr.grp td{background:var(--bg2);font-family:'Montserrat','Segoe UI',sans-serif;font-weight:700;padding:10px 12px;border-top:2px solid var(--red);}
+  tr.grp small{color:var(--muted);font:400 12px 'Inter','Segoe UI',sans-serif;margin:0 10px;}
+  tr.grp button{padding:3px 10px;font-size:12px;margin-left:6px;}
+  tr.weg td{opacity:.4;}
+  .c-chk{width:56px;text-align:center;}
+  td input[type=checkbox]{width:18px;height:18px;padding:0;accent-color:var(--red);cursor:pointer;}
+  td.txt{padding:8px 7px;font-size:13px;}
+  .link{background:none;border:none;padding:0;color:var(--text);font-weight:600;text-decoration:underline;text-underline-offset:3px;}
+  .link:hover{box-shadow:none;color:#fff;}
+  button:disabled{opacity:.4;cursor:default;box-shadow:none;}
+  #druck{display:none;}
+  @media print{
+    body>:not(#druck){display:none!important;}
+    body{background:#fff;} body.start::before{display:none;}
+    @page{size:A4;margin:16mm 16mm 20mm;}
+    #druck{display:block;color:#111;font:13px 'Inter','Segoe UI',sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    #druck .dk{display:flex;align-items:center;gap:16px;padding-bottom:12px;border-bottom:3px solid var(--red);}
+    #druck .dk img{width:64px;height:64px;}
+    #druck .dk small{display:block;font:600 11px 'Montserrat','Segoe UI',sans-serif;letter-spacing:.8px;text-transform:uppercase;color:#666;}
+    #druck h1{font:800 30px 'Montserrat','Segoe UI',sans-serif;margin:2px 0 0;}
+    #druck .dinfo{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:12px;margin:18px 0;}
+    #druck dt{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:#777;}
+    #druck dd{margin:3px 0 0;font-weight:700;font-size:15px;}
+    #druck .dnotiz{border-left:3px solid var(--red);background:#f4f4f4;padding:10px 14px;margin:0 0 6px;}
+    #druck .dnotiz p{margin:4px 0 0;white-space:pre-wrap;}
+    #druck h2{font:700 12px 'Montserrat','Segoe UI',sans-serif;text-transform:uppercase;letter-spacing:.6px;color:#333;margin:22px 0 8px;}
+    #druck table{min-width:0;border-collapse:collapse;break-inside:auto;}
+    #druck .sum{width:55%;} #druck .pt{width:100%;table-layout:fixed;}
+    #druck .pt th,#druck .pt td{padding:5px 4px;font-size:11px;}
+    #druck .pt th{text-transform:none;letter-spacing:0;font-size:10px;}
+    #druck .pt th:first-child{width:44px;} #druck .pt th:last-child{width:50px;}
+    #druck tr{break-inside:avoid;}
+    #druck th{background:#fff;color:#666;font-size:10px;letter-spacing:.4px;text-align:left;padding:6px 8px;border-bottom:2px solid #111;white-space:normal;}
+    #druck td{background:#fff;color:#111;padding:6px 8px;border-bottom:1px solid #e3e3e3;font-size:13px;}
+    #druck tbody tr:nth-child(even) td{background:#f4f4f4;}
+    #druck td:first-child{font-weight:700;}
+    #druck td:not(:first-child),#druck th:not(:first-child){text-align:right;}
+    #druck .sum td:last-child,#druck .pt td:last-child{font-weight:800;}
+    #druck tfoot td{background:var(--red);color:#fff;font-weight:800;border:none;}
+    #druck footer{margin-top:28px;font-size:10px;color:#888;border-top:1px solid #ddd;padding-top:6px;}
+    #druck .seite{break-after:page;}
+    #druck .seite:last-child{break-after:auto;}
+    #druck .seite .dk img{width:52px;height:52px;}
+    #druck .seite h1{font-size:26px;}
+    #druck .dsub{margin-left:auto;text-align:right;font-size:11px;color:#666;line-height:1.5;}
+    #druck .tl{table-layout:fixed;margin-top:14px;}
+    #druck .tl th,#druck .tl td{padding:3px 4px;font-size:10.5px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    #druck .tl th{white-space:normal;font-size:10px;vertical-align:bottom;}
+    #druck .tl th:nth-child(-n+2),#druck .tl td:nth-child(-n+2){text-align:left;}
+    #druck .tl td:nth-child(-n+2){font-weight:600;}
+    #druck .tl td:nth-child(n+3){font-weight:700;}
+    #druck .tl .leer{color:#bbb;font-weight:400;}
+    #druck .tl .trenn td{background:#fff;text-align:left;padding-top:12px;font:700 10px 'Montserrat','Segoe UI',sans-serif;text-transform:uppercase;letter-spacing:.6px;color:#333;border-bottom:2px solid var(--red);}
+    #druck .ml{column-count:2;column-gap:12mm;margin-top:16px;}
+    #druck .mb{break-inside:avoid;margin:0 0 16px;}
+    #druck .mb h3{display:flex;justify-content:space-between;font:800 14px 'Montserrat','Segoe UI',sans-serif;margin:0 0 4px;padding-bottom:4px;border-bottom:3px solid var(--red);}
+    #druck .mb h3 span:last-child{font-size:12px;color:#666;font-weight:600;}
+    #druck .mb table{width:100%;}
+    #druck .mb th,#druck .mb td{padding:3px 8px;font-size:12px;}
+    #druck .mb td:last-child{font-weight:800;}
+    #druck .hin{margin:4px 0 0;font-size:10px;color:#666;font-style:italic;}
+  }
+  .notiz{display:block;max-width:980px;margin:0 0 18px;font-size:12px;color:var(--muted);}
+  .notiz textarea{display:block;width:100%;margin-top:4px;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:var(--radius);padding:8px 10px;font:inherit;font-size:13px;resize:vertical;}
+  .notiz textarea:focus-visible{outline:2px solid var(--red);outline-offset:1px;}
 </style>
 </head>
 <body>
@@ -86,6 +167,7 @@
   <button id="btnHandy">Handy-Datei erzeugen</button>
 </header>
 <main id="app"></main>
+<div id="druck"></div>
 
 <dialog id="dlgHandy">
   <form method="dialog">
@@ -210,11 +292,21 @@ const nachname=n=>n.trim().split(/\s+/).pop()||'\uffff';
 const teile=n=>{const w=n.trim().split(/\s+/).filter(Boolean);return w.length<2?{nach:'',vor:w.join(' ')}:{nach:w.pop(),vor:w.join(' ')};};
 const members=tid=>state.people.filter(p=>p.teamId===tid).sort((a,b)=>(!!a.coach-!!b.coach)||nachname(a.name).localeCompare(nachname(b.name),'de')||a.name.localeCompare(b.name,'de'));
 
+const neueId=k=>k+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const orders=()=>state.orders||=[];
+const ART=Object.fromEntries(FIELDS);
+const STATUS={entwurf:'Entwurf',bestellt:'Bestellt',geliefert:'Geliefert'};
+const datumAT=d=>new Date(d).toLocaleDateString('de-AT',{day:'2-digit',month:'2-digit',year:'numeric'});
+const hatGroesse=g=>!!g&&g!=='/';
+
 function render(){
-  const tid=location.hash.slice(1);
-  const team=state.teams.find(t=>t.id===tid);
-  document.body.classList.toggle('start',!team);
-  team?renderTeam(team):renderOverview();
+  const h=location.hash.slice(1);
+  const team=state.teams.find(t=>t.id===h);
+  document.body.classList.toggle('start',!team&&!h.startsWith('b')&&h!=='l');
+  if(h==='l')renderLists();
+  else if(h==='b')renderOrders();
+  else if(h.startsWith('b='))renderOrder(orders().find(o=>o.id===h.slice(2)));
+  else team?renderTeam(team):renderOverview();
 }
 
 function renderOverview(){
@@ -223,8 +315,220 @@ function renderOverview(){
   <div class="grid">${state.teams.map(t=>{
     const m=members(t.id),c=m.filter(p=>p.coach).length;
     return `<button class="team-card" data-team="${esc(t.id)}"><b>${esc(t.name)}</b><small>${m.length-c} Athlet:innen${c?` · ${c} Coaches/Betreuer`:''}</small></button>`;
-  }).join('')}</div>`;
+  }).join('')}</div>
+  <section class="bereich"><h3>Bestellungen &amp; Listen</h3><div class="grid"><button class="team-card best-card" data-orders><b>Bestellungen</b><small>${orders().filter(o=>o.status!=='geliefert').length} offen · ${orders().length} gesamt</small></button><button class="team-card best-card" data-lists><b>Trainer-Listen</b><small>PDF je Team: Namen &amp; Größen · Mengen</small></button></div></section>`;
 }
+
+function entwurfZeilen(o){
+  return state.teams.filter(t=>o.teams.includes(t.id)).flatMap(t=>members(t.id).map(p=>{
+    const w=o.wahl[p.id]||{};
+    return {pid:p.id,name:p.name,teamId:t.id,team:t.name,coach:p.coach,gr:w.gr??p[o.artikel]??'',an:w.an??true};
+  }));
+}
+const zeilen=o=>o.liste||entwurfZeilen(o);
+const aktiv=o=>o.liste||entwurfZeilen(o).filter(z=>z.an&&hatGroesse(z.gr));
+function summe(o,rows){
+  const L=o.artikel==='schuhe'?SHOES:SIZES,n={};
+  rows.forEach(z=>n[z.gr]=(n[z.gr]||0)+1);
+  const pos=g=>L.includes(g)?L.indexOf(g):999;
+  return Object.entries(n).sort((a,b)=>pos(a[0])-pos(b[0])||a[0].localeCompare(b[0],'de'));
+}
+const summeText=(o,rows)=>summe(o,rows).map(([g,n])=>`${esc(g)} × ${n}`).join(' · ');
+
+function renderOrders(){
+  const os=orders();
+  app.innerHTML=`<div class="head">
+      <button data-back>← Alle Teams</button>
+      <div><h2>Bestellungen</h2><div class="sub" style="margin:0">${os.length} Bestellung${os.length===1?'':'en'}</div></div>
+      <div class="actions"><input id="oName" placeholder="Name, z. B. T-Shirts Herbst" aria-label="Name der neuen Bestellung" autocomplete="off">
+        <select id="oArt" aria-label="Artikel">${FIELDS.map(([k,l])=>`<option value="${k}">${l}</option>`).join('')}</select>
+        <button class="primary" data-neu>+ Neue Bestellung</button></div>
+    </div>
+    ${os.length?`<div class="table-wrap o"><table class="otab">
+      <thead><tr><th>Bestellung</th><th>Artikel</th><th>Status</th><th>Angelegt</th><th>Stück</th><th>Bezahlt</th><th>Ausgegeben</th></tr></thead>
+      <tbody>${[...os].reverse().map(o=>{
+        const a=aktiv(o),f=k=>o.liste?`${a.filter(z=>z[k]).length} / ${a.length}`:'–';
+        return `<tr><td class="txt"><button class="link" data-order="${esc(o.id)}">${esc(o.name)}</button></td><td class="txt">${esc(ART[o.artikel])}</td>
+          <td class="txt"><span class="badge ${o.status}">${STATUS[o.status]}</span></td><td class="txt">${datumAT(o.angelegt)}</td>
+          <td class="txt">${a.length}</td><td class="txt">${f('bez')}</td><td class="txt">${f('aus')}</td></tr>`;
+      }).join('')}</tbody></table></div>`:'<div class="empty">Noch keine Bestellung. Oben Name eingeben, Artikel wählen, „+ Neue Bestellung“.</div>'}`;
+}
+
+function renderOrder(o){
+  if(!o){renderOrders();return;}
+  const fix=!!o.liste,L=zeilen(o),a=aktiv(o);
+  const ohne=fix?0:L.filter(z=>z.an&&!hatGroesse(z.gr)).length;
+  const teams=fix?[...new Map(L.map(z=>[z.teamId,z.team]))]:state.teams.filter(t=>o.teams.includes(t.id)).map(t=>[t.id,t.name]);
+  const zaehl=k=>a.filter(z=>z[k]).length;
+  const knopf={entwurf:'Als bestellt markieren',bestellt:'Als geliefert markieren'}[o.status];
+  const sizeSel=z=>{
+    const opts=['',...(o.artikel==='schuhe'?SHOES:SIZES)];
+    if(z.gr&&!opts.includes(z.gr))opts.push(z.gr);
+    return `<select class="sz" data-o="gr" aria-label="Größe ${esc(z.name)}">${opts.map(g=>`<option value="${esc(g)}"${g===z.gr?' selected':''}>${g?esc(g):'–'}</option>`).join('')}<option value="__andere">Andere…</option></select>`;
+  };
+  const zeile=z=>{const n=teile(z.name);return fix
+    ?`<tr data-pid="${esc(z.pid)}"${z.coach?' class="coach"':''}><td class="txt">${esc(n.nach)}</td><td class="txt">${esc(n.vor)}</td><td class="txt"><b>${esc(z.gr)}</b></td>
+      <td class="c-chk"><input type="checkbox" data-o="bez"${z.bez?' checked':''} aria-label="${esc(z.name)} bezahlt"></td>
+      <td class="c-chk"><input type="checkbox" data-o="aus"${z.aus?' checked':''} aria-label="${esc(z.name)} ausgegeben"></td></tr>`
+    :`<tr data-pid="${esc(z.pid)}" class="${z.coach?'coach':''}${z.an?'':' weg'}"><td class="c-chk"><input type="checkbox" data-o="an"${z.an?' checked':''} aria-label="${esc(z.name)} bestellen"></td>
+      <td class="txt">${esc(n.nach)}</td><td class="txt">${esc(n.vor)}</td><td class="c-size">${sizeSel(z)}</td>
+      <td class="txt">${z.an&&!hatGroesse(z.gr)?'<span class="warn">keine Größe</span>':''}</td></tr>`;};
+  const gruppe=([tid,name])=>{
+    const tz=L.filter(z=>z.teamId===tid),ta=fix?tz:tz.filter(z=>z.an&&hatGroesse(z.gr));
+    return `<tr class="grp"><td colspan="5">${esc(name)}<small>${ta.length} Stück${ta.length?': '+summeText(o,ta):''}</small>${fix?'':`<button data-alle="${esc(tid)}">alle</button><button data-keine="${esc(tid)}">keine</button>`}</td></tr>${tz.map(zeile).join('')}`;
+  };
+  app.innerHTML=`<div class="head">
+      <button data-orders>← Alle Bestellungen</button>
+      <div><input class="oname" data-oname value="${esc(o.name)}" aria-label="Name der Bestellung">
+        <div class="sub" style="margin:2px 0 0">${esc(ART[o.artikel])} · <span class="badge ${o.status}">${STATUS[o.status]}</span> · angelegt ${datumAT(o.angelegt)}${o.bestellt?` · bestellt ${datumAT(o.bestellt)}`:''}${o.geliefert?` · geliefert ${datumAT(o.geliefert)}`:''}</div></div>
+      <div class="actions"><button data-druck${a.length?'':' disabled'}>PDF / Drucken</button>${knopf?`<button class="primary" data-status${a.length?'':' disabled'}>${knopf}</button>`:''}<button class="danger" data-odel>Löschen</button></div>
+    </div>
+    ${fix?'':`<div class="sub">Teams auswählen:</div><div class="chips">${state.teams.map(t=>`<button class="chip" data-tteam="${esc(t.id)}" aria-pressed="${o.teams.includes(t.id)}">${esc(t.name)}</button>`).join('')}</div>`}
+    <div class="summe"><span class="ges">${a.length} Stück</span>${summe(o,a).map(([g,n])=>`<span>${esc(g)} × ${n}</span>`).join('')}
+      ${ohne?`<b class="warn">${ohne} ohne Größe – werden nicht bestellt</b>`:''}
+      ${fix?`<span>bezahlt ${zaehl('bez')} / ${a.length}</span><span>ausgegeben ${zaehl('aus')} / ${a.length}</span>`:''}</div>
+    <label class="notiz">Bemerkung (erscheint im PDF)<textarea data-onotiz rows="2" placeholder="z. B. Farbe schwarz, Logo hinten">${esc(o.notiz)}</textarea></label>
+    ${teams.length?`<div class="table-wrap o"><table class="otab">
+      <thead><tr>${fix?'<th>Nachname</th><th>Vorname</th><th>Größe</th><th class="c-chk">Bezahlt</th><th class="c-chk">Ausgegeben</th>':'<th class="c-chk">Bestellen</th><th>Nachname</th><th>Vorname</th><th>Größe</th><th></th>'}</tr></thead>
+      <tbody>${teams.map(gruppe).join('')}</tbody></table></div>`:'<div class="empty">Noch kein Team ausgewählt.</div>'}`;
+}
+
+function drucken(o){
+  const a=aktiv(o),s=summe(o,a),heute=datumAT(Date.now());
+  const teams=[...new Map(a.map(z=>[z.teamId,z.team]))];
+  const anz=(tid,g)=>a.filter(z=>z.teamId===tid&&(g===undefined||z.gr===g)).length;
+  document.getElementById('druck').innerHTML=`<div class="dk"><img src="vp-logo-icon.png" alt=""><div><small>Vienna Pirates Cheerleading</small><h1>Bestellung</h1></div></div>
+    <dl class="dinfo"><div><dt>Bestellung</dt><dd>${esc(o.name)}</dd></div><div><dt>Artikel</dt><dd>${esc(ART[o.artikel])}</dd></div>
+      <div><dt>Datum</dt><dd>${heute}</dd></div><div><dt>Stück gesamt</dt><dd>${a.length}</dd></div></dl>
+    ${o.notiz?`<div class="dnotiz"><b>Bemerkung</b><p>${esc(o.notiz)}</p></div>`:''}
+    <h2>Mengen nach Größe</h2>
+    <table class="sum"><thead><tr><th>Größe</th><th>Stück</th></tr></thead>
+      <tbody>${s.map(([g,n])=>`<tr><td>${esc(g)}</td><td>${n}</td></tr>`).join('')}</tbody>
+      <tfoot><tr><td>Gesamt</td><td>${a.length}</td></tr></tfoot></table>
+    ${teams.length>1?`<h2>Aufteilung nach Team</h2>
+    <table class="pt"><thead><tr><th>Größe</th>${teams.map(([,n])=>`<th>${esc(n)}</th>`).join('')}<th>Gesamt</th></tr></thead>
+      <tbody>${s.map(([g,n])=>`<tr><td>${esc(g)}</td>${teams.map(([id])=>`<td>${anz(id,g)||''}</td>`).join('')}<td>${n}</td></tr>`).join('')}</tbody>
+      <tfoot><tr><td>Gesamt</td>${teams.map(([id])=>`<td>${anz(id)}</td>`).join('')}<td>${a.length}</td></tr></tfoot></table>`:''}
+    <footer>Vienna Pirates Cheerleading · erstellt am ${heute}</footer>`;
+  print();
+}
+
+app.addEventListener('click',e=>{
+  const t=e.target.closest('button');if(!t)return;
+  if(t.matches('[data-orders]')){location.hash='b';return;}
+  if(t.matches('[data-order]')){location.hash='b='+t.dataset.order;return;}
+  if(t.matches('[data-neu]')){neueBestellung();return;}
+  const o=orders().find(x=>x.id===location.hash.slice(3));if(!o)return;
+  if(t.matches('[data-tteam]')){const id=t.dataset.tteam;o.teams=o.teams.includes(id)?o.teams.filter(x=>x!==id):[...o.teams,id];}
+  else if(t.matches('[data-alle],[data-keine]')){const an=t.matches('[data-alle]'),tid=t.dataset.alle||t.dataset.keine;members(tid).forEach(p=>o.wahl[p.id]={...o.wahl[p.id],an});}
+  else if(t.matches('[data-druck]')){drucken(o);return;}
+  else if(t.matches('[data-status]')){
+    if(o.status==='entwurf'){
+      const ohne=entwurfZeilen(o).filter(z=>z.an&&!hatGroesse(z.gr)).length;
+      if(!confirm(`„${o.name}“ als bestellt markieren?\n\n${aktiv(o).length} Stück. Die Liste wird danach eingefroren – spätere Größenänderungen ändern diese Bestellung nicht mehr.${ohne?`\n\nAchtung: ${ohne} ausgewählte Personen ohne Größe werden nicht bestellt.`:''}`))return;
+      o.liste=aktiv(o).map(({pid,name,teamId,team,coach,gr})=>({pid,name,teamId,team,coach,gr,bez:false,aus:false}));
+      delete o.wahl;o.status='bestellt';o.bestellt=tag();
+    }else{o.status='geliefert';o.geliefert=tag();}
+  }
+  else if(t.matches('[data-odel]')){
+    if(!confirm(`Bestellung „${o.name}“ wirklich löschen?`))return;
+    state.orders=orders().filter(x=>x!==o);save();location.hash='b';return;
+  }
+  else return;
+  save();render();
+});
+
+let lSel=new Set(state.teams.map(t=>t.id)),lArt='beide';
+const istHinweis=g=>hatGroesse(g)&&!/^[0-9XYSML/()\s,.-]+$/i.test(g);
+
+function renderLists(){
+  const ts=state.teams.filter(t=>lSel.has(t.id)),seiten=ts.length*(lArt==='beide'?2:1);
+  app.innerHTML=`<div class="head">
+      <button data-back>← Alle Teams</button>
+      <div><h2>Trainer-Listen</h2><div class="sub" style="margin:0">Mit Namen – nur für die Trainer. Pro Team und Liste eine A4-Seite.</div></div>
+      <div class="actions"><button class="primary" data-ldruck${seiten?'':' disabled'}>PDF / Drucken (${seiten} Seite${seiten===1?'':'n'})</button></div>
+    </div>
+    <div class="sub">Welche Liste?</div>
+    <div class="chips">${[['namen','Namensliste'],['mengen','Mengenliste'],['beide','Beide']].map(([k,l])=>`<button class="chip" data-lart="${k}" aria-pressed="${lArt===k}">${l}</button>`).join('')}</div>
+    <div class="sub">Teams auswählen: <button data-lalle>alle</button> <button data-lkeine>keine</button></div>
+    <div class="chips">${state.teams.map(t=>`<button class="chip" data-lteam="${esc(t.id)}" aria-pressed="${lSel.has(t.id)}">${esc(t.name)}</button>`).join('')}</div>
+    <div class="sub"><b>Namensliste:</b> Name und Größe je Artikel, Coaches &amp; Betreuer abgesetzt. Artikel, die im Team niemand hat, fehlen. <b>Mengenliste:</b> je Artikel Größe × Stück.</div>`;
+}
+
+const listenKopf=(t,art)=>{
+  const m=members(t.id),co=m.filter(p=>p.coach).length;
+  return `<div class="dk"><img src="vp-logo-icon.png" alt=""><div><small>Vienna Pirates Cheerleading · ${art}</small><h1>${esc(t.name)}</h1></div>
+    <div class="dsub">${m.length-co} Athlet:innen${co?` · ${co} Coaches/Betreuer`:''}<br>Stand ${datumAT(Date.now())}</div></div>`;
+};
+
+function namensliste(t){
+  const m=members(t.id),sp=FIELDS.filter(([k])=>m.some(p=>hatGroesse(p[k]))),co=m.filter(p=>p.coach);
+  const zeile=p=>{const n=teile(p.name);return `<tr><td>${esc(n.nach)}</td><td>${esc(n.vor)}</td>${sp.map(([k])=>`<td>${hatGroesse(p[k])?esc(p[k]):'<span class="leer">–</span>'}</td>`).join('')}</tr>`;};
+  return `<section class="seite">${listenKopf(t,'Größenliste')}
+    <table class="tl" style="width:${64+19*sp.length}mm"><colgroup><col style="width:32mm"><col style="width:32mm">${sp.map(()=>'<col style="width:19mm">').join('')}</colgroup>
+      <thead><tr><th>Nachname</th><th>Vorname</th>${sp.map(([,l])=>`<th>${l}</th>`).join('')}</tr></thead>
+      <tbody>${m.filter(p=>!p.coach).map(zeile).join('')}${co.length?`<tr class="trenn"><td colspan="${sp.length+2}">Coaches &amp; Betreuer</td></tr>${co.map(zeile).join('')}`:''}</tbody></table></section>`;
+}
+
+function mengenliste(t){
+  const m=members(t.id),hatCo=m.some(p=>p.coach);
+  const bloecke=FIELDS.map(([k,l])=>{
+    const L=k==='schuhe'?SHOES:SIZES,n={},hin={};
+    m.filter(p=>hatGroesse(p[k])).forEach(p=>{const z=istHinweis(p[k])?hin:n;(z[p[k]]||={a:0,c:0})[p.coach?'c':'a']++;});
+    const pos=g=>L.includes(g)?L.indexOf(g):999,zeilen=Object.entries(n).sort((a,b)=>pos(a[0])-pos(b[0])||a[0].localeCompare(b[0],'de'));
+    if(!zeilen.length)return '';
+    const ges=zeilen.reduce((s,[,v])=>s+v.a+v.c,0);
+    return `<div class="mb"><h3><span>${l}</span><span>${ges} Stück</span></h3>
+      <table><thead><tr><th>Größe</th>${hatCo?'<th>Athlet:innen</th><th>Coaches</th><th>Gesamt</th>':'<th>Stück</th>'}</tr></thead>
+      <tbody>${zeilen.map(([g,v])=>`<tr><td>${esc(g)}</td>${hatCo?`<td>${v.a||''}</td><td>${v.c||''}</td><td>${v.a+v.c}</td>`:`<td>${v.a}</td>`}</tr>`).join('')}</tbody></table>
+      ${Object.keys(hin).length?`<p class="hin">Hinweis, nicht mitgezählt: ${Object.entries(hin).map(([g,v])=>`${esc(g)} (${v.a+v.c}×)`).join(', ')}</p>`:''}</div>`;
+  }).join('');
+  return `<section class="seite">${listenKopf(t,'Mengenliste')}<div class="ml">${bloecke||'<p>Keine Größen eingetragen.</p>'}</div></section>`;
+}
+
+function druckenListen(){
+  document.getElementById('druck').innerHTML=state.teams.filter(t=>lSel.has(t.id))
+    .map(t=>(lArt!=='mengen'?namensliste(t):'')+(lArt!=='namen'?mengenliste(t):'')).join('');
+  print();
+}
+
+app.addEventListener('click',e=>{
+  const t=e.target.closest('button');if(!t)return;
+  if(t.matches('[data-lists]')){location.hash='l';return;}
+  if(location.hash!=='#l')return;
+  if(t.matches('[data-lart]'))lArt=t.dataset.lart;
+  else if(t.matches('[data-lteam]')){const id=t.dataset.lteam;lSel.has(id)?lSel.delete(id):lSel.add(id);}
+  else if(t.matches('[data-lalle]'))lSel=new Set(state.teams.map(x=>x.id));
+  else if(t.matches('[data-lkeine]'))lSel=new Set();
+  else if(t.matches('[data-ldruck]')){druckenListen();return;}
+  else return;
+  render();
+});
+
+function neueBestellung(){
+  const inp=document.getElementById('oName'),name=inp.value.trim();
+  if(!name){inp.focus();return;}
+  const o={id:neueId('b'),name,artikel:document.getElementById('oArt').value,status:'entwurf',angelegt:tag(),teams:[],wahl:{}};
+  orders().push(o);save();location.hash='b='+o.id;
+}
+
+app.addEventListener('change',e=>{
+  const t=e.target,o=orders().find(x=>x.id===location.hash.slice(3));
+  if(!o||!(t.dataset.o||'oname' in t.dataset||'onotiz' in t.dataset))return;
+  if('oname' in t.dataset){o.name=t.value.trim()||o.name;save();return;}
+  if('onotiz' in t.dataset){o.notiz=t.value.trim();save();return;}
+  const pid=t.closest('tr').dataset.pid,k=t.dataset.o;
+  if(o.liste)o.liste.find(z=>z.pid===pid)[k]=t.checked;
+  else{
+    const w=o.wahl[pid]||={};
+    if(k==='an')w.an=t.checked;
+    else{
+      const v=t.value==='__andere'?prompt('Größe eingeben:'):t.value;
+      if(v!==null)w.gr=v.trim();
+    }
+  }
+  save();render();
+});
 
 function sizeSelect(k,l,v){
   const opts=['',...(k==='schuhe'?SHOES:SIZES)];
@@ -270,7 +574,11 @@ function addPerson(coach){
   document.getElementById('addName').focus({preventScroll:true});
   statusEl.textContent=`${name} eingetragen`;
 }
-app.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='addName')addPerson(false);});
+app.addEventListener('keydown',e=>{
+  if(e.key!=='Enter')return;
+  if(e.target.id==='addName')addPerson(false);
+  if(e.target.id==='oName')neueBestellung();
+});
 
 app.addEventListener('click',e=>{
   const card=e.target.closest('[data-team]');
