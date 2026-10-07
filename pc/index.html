@@ -263,18 +263,19 @@ login();
 <script>
 (function(){
 const KEY='vpGroessen';
-const DEFAULT={"teams":[{"id":"t1","name":"Pocket"},{"id":"t2","name":"Tiny"},{"id":"t3","name":"Red Rubies"},{"id":"t4","name":"Zodiac"},{"id":"t5","name":"Treasure"},{"id":"t6","name":"Guardians"},{"id":"t7","name":"Triple X"},{"id":"t8","name":"Thunder"},{"id":"t9","name":"Lady 4"},{"id":"t10","name":"Revolution"}],"people":[]};
+const DEFAULT={"teams":[{"id":"t1","name":"Pocket"},{"id":"t2","name":"Tiny"},{"id":"t3","name":"Red Rubies"},{"id":"t4","name":"Zodiac"},{"id":"t5","name":"Treasure"},{"id":"t6","name":"Guardians"},{"id":"t7","name":"Triple X"},{"id":"t8","name":"Thunder"},{"id":"t9","name":"Lady 4"},{"id":"t10","name":"Revolution"},{"id":"t11","name":"Gold Stars"},{"id":"t12","name":"Shadow"}],"people":[]};
 const FIELDS=[['tshirt','T-Shirt'],['dressOben','Dress oben'],['dressUnten','Dress unten'],['bh','Sport BH'],['schuhe','Schuhe'],['shorts','Shorts']];
 const SIZES=['Y2XS','YXS','YS','YM','YL','YXL','2XS','XS','S','M','L','XL','XXL','L/XL','70','90','104','110','116','122','128','130','134','136','140','146','150','152','156','158','160','164','176','/'];
 const SHOES=['5','5,5','6','6,5','7','7,5','8','8,5','9','9,5','10','10,5','11','11,5','12','/'];
 const app=document.getElementById('app');
 const statusEl=document.getElementById('status');
+const teamsErgaenzen=s=>{for(const t of DEFAULT.teams)if(!s.teams.some(x=>x.id===t.id||x.name===t.name))s.teams.push({...t});return s;};
 let state=load();
 
 function load(){
   try{
     const s=JSON.parse(localStorage.getItem(KEY));
-    if(s&&Array.isArray(s.teams)&&Array.isArray(s.people)&&s.people.length) return s;
+    if(s&&Array.isArray(s.teams)&&Array.isArray(s.people)&&s.people.length) return teamsErgaenzen(s);
   }catch(e){}
   return structuredClone(DEFAULT);
 }
@@ -647,7 +648,7 @@ fileIn.addEventListener('change',async()=>{
     const s=JSON.parse(await f.text());
     if(!Array.isArray(s.teams)||!Array.isArray(s.people)||!s.people.length) throw 0;
     if(!confirm(`Sicherung mit ${s.people.length} Personen laden? Der aktuelle Stand wird ersetzt.`))return;
-    state=s;save();location.hash='';render();
+    state=teamsErgaenzen(s);save();location.hash='';render();
   }catch(e){alert('Diese Datei ist keine gültige Größen-Sicherung.');}
 });
 
@@ -688,7 +689,7 @@ const merkeStand=()=>{try{localStorage.setItem(OSTAND,JSON.stringify(state));}ca
 async function lese(){
   try{
     const s=JSON.parse(await(await(await dir.getFileHandle(DATEI)).getFile()).text());
-    return Array.isArray(s.teams)&&Array.isArray(s.people)?s:'defekt';
+    return Array.isArray(s.teams)&&Array.isArray(s.people)?teamsErgaenzen(s):'defekt';
   }catch(e){return e.name==='NotFoundError'?null:'defekt';}
 }
 async function kopie(name,immer){
