@@ -68,11 +68,6 @@
   tr.coach td.c-name input{color:var(--amber);}
   .empty{color:var(--muted);padding:18px;}
   .hidden{display:none;}
-  dialog{background:var(--bg2);color:var(--text);border:1px solid var(--border);border-radius:var(--radius);padding:22px;width:min(420px,92vw);}
-  dialog::backdrop{background:rgba(0,0,0,.6);}
-  dialog label{display:block;font-size:13px;color:var(--muted);margin-top:12px;}
-  dialog input{display:block;width:100%;margin-top:4px;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:8px;font:inherit;}
-  .dlg-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px;}
 
   .best-card{border-left-color:var(--amber);}
   .bereich{margin-top:44px;padding-top:22px;border-top:1px solid var(--border);}
@@ -164,21 +159,9 @@
   <button id="btnExport">Sicherung speichern</button>
   <button id="btnImport">Sicherung laden</button>
   <input type="file" id="fileImport" accept=".json,application/json" class="hidden">
-  <button id="btnHandy">Handy-Datei erzeugen</button>
 </header>
 <main id="app"></main>
 <div id="druck"></div>
-
-<dialog id="dlgHandy">
-  <form method="dialog">
-    <h2>Handy-Datei erzeugen</h2>
-    <p class="sub">Enthält nur Vorname, abgekürzten Nachnamen, Team und Größen – verschlüsselt mit diesem Passwort. Immer dasselbe Passwort verwenden.</p>
-    <label>Passwort<input type="password" id="pw1" required minlength="6" autocomplete="new-password"></label>
-    <label>Passwort wiederholen<input type="password" id="pw2" required minlength="6" autocomplete="new-password"></label>
-    <div id="pwMsg" class="sub" role="alert"></div>
-    <div class="dlg-actions"><button value="cancel" formnovalidate>Abbrechen</button><button class="primary" value="ok">Erzeugen</button></div>
-  </form>
-</dialog>
 
 <template id="handyTpl">
 <style>
@@ -650,33 +633,6 @@ fileIn.addEventListener('change',async()=>{
     if(!confirm(`Sicherung mit ${s.people.length} Personen laden? Der aktuelle Stand wird ersetzt.`))return;
     state=teamsErgaenzen(s);save();location.hash='';render();
   }catch(e){alert('Diese Datei ist keine gültige Größen-Sicherung.');}
-});
-
-const kurzName=n=>{const [v,...r]=String(n).trim().split(/\s+/);return [v,...r.map(w=>w[0].toUpperCase()+'.')].join(' ');};
-async function encrypt(obj,pw){
-  const salt=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12));
-  const base=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveKey']);
-  const key=await crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:250000,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['encrypt']);
-  const ct=new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv},key,new TextEncoder().encode(JSON.stringify(obj))));
-  const all=new Uint8Array([...salt,...iv,...ct]);
-  let bin='';for(const b of all)bin+=String.fromCharCode(b);
-  return btoa(bin);
-}
-const dlg=document.getElementById('dlgHandy'),pw1=document.getElementById('pw1'),pw2=document.getElementById('pw2'),pwMsg=document.getElementById('pwMsg');
-document.getElementById('btnHandy').addEventListener('click',()=>{pw1.value=pw2.value=pwMsg.textContent='';dlg.showModal();});
-dlg.querySelector('form').addEventListener('submit',async e=>{
-  if(e.submitter?.value!=='ok')return;
-  if(pw1.value!==pw2.value){e.preventDefault();pwMsg.textContent='Die Passwörter stimmen nicht überein.';return;}
-  const data={teams:state.teams.map(t=>({name:t.name,p:members(t.id).filter(p=>p.name.trim()).map(p=>({
-    n:kurzName(p.name),c:p.coach,s:FIELDS.filter(([k])=>p[k]).map(([k,l])=>[l,p[k]])
-  }))}))};
-  const stand=new Date().toLocaleDateString('de-AT',{day:'2-digit',month:'2-digit',year:'numeric'});
-  const tpl=document.getElementById('handyTpl').innerHTML.replace('__DATA__',await encrypt(data,pw1.value)).replace('__STAND__',stand);
-  const html=`<!DOCTYPE html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>Vienna Pirates · Größen</title><link rel="icon" type="image/png" href="vp-logo-icon.png"><link rel="apple-touch-icon" href="vp-logo-icon.png"></head><body>${tpl}</body></html>`;
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([html],{type:'text/html'}));
-  a.download='handy.html';a.click();URL.revokeObjectURL(a.href);
-  statusEl.textContent='Handy-Datei erzeugt – jetzt auf Netlify hochladen';
 });
 
 const btnOrdner=document.getElementById('btnOrdner');
