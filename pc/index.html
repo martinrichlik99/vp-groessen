@@ -27,6 +27,7 @@
   button.danger{border-color:#7a2020;color:#e08585;padding:4px 9px;}
   button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--red);outline-offset:1px;}
 
+  #ver{text-align:center;color:var(--muted);font-size:12px;padding:0 0 24px;}
   main{max-width:1600px;margin:0 auto;padding:24px 22px 60px;}
   h2{margin:0 0 4px;font-size:22px;}
   .sub{color:var(--muted);font-size:13px;margin-bottom:18px;}
@@ -161,6 +162,7 @@
   <input type="file" id="fileImport" accept=".json,application/json" class="hidden">
 </header>
 <main id="app"></main>
+<footer id="ver"></footer>
 <div id="druck"></div>
 
 <template id="handyTpl">
@@ -247,6 +249,8 @@ login();
 (function(){
 const KEY='vpGroessen';
 const DEFAULT={"teams":[{"id":"t1","name":"Pocket"},{"id":"t2","name":"Tiny"},{"id":"t3","name":"Red Rubies"},{"id":"t4","name":"Zodiac"},{"id":"t5","name":"Treasure"},{"id":"t6","name":"Guardians"},{"id":"t7","name":"Triple X"},{"id":"t8","name":"Thunder"},{"id":"t9","name":"Lady 4"},{"id":"t10","name":"Revolution"},{"id":"t11","name":"Gold Stars"},{"id":"t12","name":"Shadow"}],"people":[]};
+const APP_VERSION='1.1',APP_DATUM='2026-10-10';
+document.getElementById('ver').textContent=`Version ${APP_VERSION} · ${APP_DATUM}`;
 const FIELDS=[['tshirt','T-Shirt'],['dressOben','Dress oben'],['dressUnten','Dress unten'],['bh','Sport BH'],['schuhe','Schuhe'],['shorts','Shorts']];
 const SIZES=['Y2XS','YXS','YS','YM','YL','YXL','2XS','XS','S','M','L','XL','XXL','L/XL','70','90','104','110','116','122','128','130','134','136','140','146','150','152','156','158','160','164','176','/'];
 const SHOES=['5','5,5','6','6,5','7','7,5','8','8,5','9','9,5','10','10,5','11','11,5','12','/'];
