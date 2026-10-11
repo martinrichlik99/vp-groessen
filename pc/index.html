@@ -426,7 +426,7 @@ app.addEventListener('click',e=>{
   save();render();
 });
 
-let lSel=new Set(state.teams.map(t=>t.id)),lArt='beide';
+let lSel=new Set(),lArt='beide';
 const istHinweis=g=>hatGroesse(g)&&!/^[0-9XYSML/()\s,.-]+$/i.test(g);
 
 function renderLists(){
@@ -482,7 +482,7 @@ function druckenListen(){
 
 app.addEventListener('click',e=>{
   const t=e.target.closest('button');if(!t)return;
-  if(t.matches('[data-lists]')){location.hash='l';return;}
+  if(t.matches('[data-lists]')){lSel=new Set();location.hash='l';return;}
   if(location.hash!=='#l')return;
   if(t.matches('[data-lart]'))lArt=t.dataset.lart;
   else if(t.matches('[data-lteam]')){const id=t.dataset.lteam;lSel.has(id)?lSel.delete(id):lSel.add(id);}
